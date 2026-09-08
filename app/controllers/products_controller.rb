@@ -12,7 +12,10 @@ class ProductsController < ApplicationController
 
     @products = Product.all
     @products = @products.where(category: params[:category]) if params[:category].present?
-    @products = @products.where("name LIKE ?", "%#{Product.sanitize_sql_like(params[:q])}%") if params[:q].present?
+    if params[:q].present?
+      term = "%#{Product.sanitize_sql_like(params[:q])}%"
+      @products = @products.where("name LIKE :term OR CAST(price AS TEXT) LIKE :term", term: term)
+    end
     @products = @products.order(SORT_OPTIONS.fetch(params[:sort], { name: :asc }))
   end
 
