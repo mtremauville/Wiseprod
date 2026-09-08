@@ -9,22 +9,16 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  def generate_sav_response
-    @product = Product.find(params[:id])
-    situation = params[:situation]
+def generate_sales_argument
+  @product = Product.find(params[:id])
+  selected_services = Array(params[:services])
 
-    generator = SavResponseGenerator.new(@product, situation)
-    response = generator.call
+  generator = SalesArgumentGenerator.new(@product, selected_services)
+  response = generator.call
 
-    GeneratedContent.create(
-      content_type: "sav_response",
-      prompt: situation,
-      response: response,
-      product: @product
-    )
-
-    redirect_to @product, notice: "Réponse générée avec succès"
-  end
+  redirect_to @product, notice: "Argumentaire généré avec succès",
+    flash: { sales_argument: response, sales_argument_services: selected_services.join(",") }
+end
 
   def demo_login
     demo_user = User.find_by(email: "demo@wiseprod.fr")
