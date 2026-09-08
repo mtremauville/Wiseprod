@@ -55,3 +55,10 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+gem "bcrypt", "~> 3.1.7"
+gem "devise"
+
+# Pin json below 3.0: it dropped the positional-hash compat shim that
+# ActiveSupport::JSON.decode still relies on, breaking session/cookie reads.
+gem "json", "~> 2.9"
