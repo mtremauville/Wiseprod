@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_173220) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_192441) do
   create_table "generated_contents", force: :cascade do |t|
     t.string "content_type"
     t.datetime "created_at", null: false
@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_173220) do
     t.string "category"
     t.datetime "created_at", null: false
     t.text "description"
+    t.string "image_url"
     t.string "name"
     t.decimal "price"
     t.text "sales_argument"
