@@ -1,24 +1,32 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [ :demo_login ]
 
+  SORT_OPTIONS = {
+    "price_asc" => { price: :asc },
+    "price_desc" => { price: :desc },
+    "name_asc" => { name: :asc }
+  }.freeze
+
   def index
+    @categories = Product.distinct.order(:category).pluck(:category)
+
     @products = Product.all
+    @products = @products.where(category: params[:category]) if params[:category].present?
+    @products = @products.where("name LIKE ?", "%#{Product.sanitize_sql_like(params[:q])}%") if params[:q].present?
+    @products = @products.order(SORT_OPTIONS.fetch(params[:sort], { name: :asc }))
   end
 
   def show
     @product = Product.find(params[:id])
+    if @product.sales_argument.blank?
+      @product.update(sales_argument: SalesArgumentGenerator.new(@product).call)
+    end
+
+    @alternative_products = Product.where(category: @product.category)
+      .where.not(id: @product.id)
+      .order(Arel.sql("ABS(price - #{@product.price})"))
+      .limit(2)
   end
-
-def generate_sales_argument
-  @product = Product.find(params[:id])
-  selected_services = Array(params[:services])
-
-  generator = SalesArgumentGenerator.new(@product, selected_services)
-  response = generator.call
-
-  redirect_to @product, notice: "Argumentaire généré avec succès",
-    flash: { sales_argument: response, sales_argument_services: selected_services.join(",") }
-end
 
   def demo_login
     demo_user = User.find_by(email: "demo@wiseprod.fr")

@@ -1,17 +1,42 @@
 <h1>Produits</h1>
 
-<div class="row">
-  <% @products.each do |product| %>
-    <div class="col-md-4 mb-3">
-      <div class="card">
-        <%= image_tag product.image_url, class: "card-img-top", alt: product.name, style: "height: 200px; object-fit: cover;" %>
-        <div class="card-body">
-          <h5 class="card-title"><%= product.name %></h5>
-          <p class="card-text"><%= product.category %></p>
-          <p class="card-text"><strong><%= product.price %> €</strong></p>
-          <%= link_to "Voir le détail", product_path(product), class: "btn btn-primary" %>
-        </div>
-      </div>
-    </div>
+<%= form_with url: products_path, method: :get, class: "filter-bar", data: { controller: "search", turbo_frame: "products-results" } do %>
+  <%= search_field_tag :q, params[:q], placeholder: "Rechercher un produit…", class: "filter-search",
+        autocomplete: "off", data: { action: "input->search#submit" } %>
+
+  <%= select_tag :category,
+        options_for_select([["Toutes les catégories", ""]] + @categories.map { |c| [c, c] }, params[:category]),
+        class: "filter-select", onchange: "this.form.requestSubmit()" %>
+
+  <%= select_tag :sort,
+        options_for_select(
+          [["Nom (A → Z)", "name_asc"], ["Prix croissant", "price_asc"], ["Prix décroissant", "price_desc"]],
+          params[:sort].presence || "name_asc"
+        ),
+        class: "filter-select", onchange: "this.form.requestSubmit()" %>
+
+  <button type="submit" class="filter-submit">Rechercher</button>
+  <% if params[:q].present? || params[:category].present? || params[:sort].present? %>
+    <%= link_to "Réinitialiser", products_path, class: "filter-reset" %>
   <% end %>
-</div>
+<% end %>
+
+<%= turbo_frame_tag "products-results", target: "_top" do %>
+  <% if @products.any? %>
+    <div class="product-grid">
+      <% @products.each do |product| %>
+        <div class="product-card">
+          <%= link_to product_path(product), class: "product-card-media" do %>
+            <%= image_tag product.image_url, alt: product.name %>
+          <% end %>
+          <span class="product-badge"><%= product.category %></span>
+          <div class="product-name"><%= link_to product.name, product_path(product) %></div>
+          <div class="product-price"><%= product.price %> €</div>
+          <%= link_to "Voir le détail", product_path(product), class: "btn-generate product-card-cta" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="empty-state">Aucun produit ne correspond à votre recherche.</p>
+  <% end %>
+<% end %>

@@ -61,7 +61,6 @@ categories.each do |category|
       category: item["category"],
       price: item["price"],
       description: item["description"],
-      sales_argument: "Note moyenne : #{item['rating']}/5 · Stock disponible : #{item['stock']} unités",
       image_url: item["thumbnail"]
     )
   end

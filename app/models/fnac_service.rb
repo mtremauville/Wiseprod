@@ -23,10 +23,6 @@ class FnacService
   }.freeze
 
   def self.available_for(category)
-    SERVICES.select { |_key, service| service[:categories].include?(category) }
-  end
-
-  def self.names_for(keys)
-    Array(keys).map { |key| SERVICES.dig(key, :name) }.compact
+    SERVICES.values.select { |service| service[:categories].include?(category) }
   end
 end

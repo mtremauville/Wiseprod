@@ -1,32 +1,42 @@
-<div class="row justify-content-center mt-5">
-  <div class="col-md-5">
-    <h2 class="mb-4">Connexion</h2>
+<div class="auth-page">
+  <div class="auth-card">
+    <h1 class="auth-title">Connexion</h1>
+    <p class="auth-subtitle">Accédez à votre espace conseiller WiseProd</p>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="mb-3">
-        <%= f.label :email, class: "form-label" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+    <% if flash[:alert].present? %>
+      <div class="auth-flash auth-flash-alert"><%= flash[:alert] %></div>
+    <% end %>
+    <% if flash[:notice].present? %>
+      <div class="auth-flash auth-flash-notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+      <div class="auth-field">
+        <%= f.label :email, "Email" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
       </div>
 
-      <div class="mb-3">
-        <%= f.label :password, class: "form-label" %>
-        <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+      <div class="auth-field">
+        <%= f.label :password, "Mot de passe" %>
+        <%= f.password_field :password, autocomplete: "current-password" %>
       </div>
 
       <% if devise_mapping.rememberable? %>
-        <div class="mb-3 form-check">
-          <%= f.check_box :remember_me, class: "form-check-input" %>
-          <%= f.label :remember_me, class: "form-check-label" %>
-        </div>
+        <label class="auth-remember">
+          <%= f.check_box :remember_me %>
+          Se souvenir de moi
+        </label>
       <% end %>
 
-      <%= f.submit "Se connecter", class: "btn btn-primary" %>
+      <%= f.submit "Se connecter", class: "auth-submit" %>
     <% end %>
 
-    <div class="my-4 text-center">
-      <%= link_to "Essayer sans compte", demo_login_path, class: "btn btn-lg btn-success" %>
-    </div>
+    <div class="auth-divider"><span>ou</span></div>
 
-    <%= render "devise/shared/links" %>
+    <%= link_to "Essayer sans compte", demo_login_path, class: "auth-demo" %>
+
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
 </div>

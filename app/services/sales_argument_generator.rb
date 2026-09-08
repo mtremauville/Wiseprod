@@ -1,7 +1,6 @@
 class SalesArgumentGenerator
-  def initialize(product, services)
+  def initialize(product)
     @product = product
-    @services = services
   end
 
   def call
@@ -11,11 +10,10 @@ class SalesArgumentGenerator
       Description : #{@product.description}
       Prix : #{@product.price} €
 
-      Services additionnels à proposer avec ce produit : #{services_text}
-
-      Rédige un argumentaire de vente convaincant pour ce produit, qui met en avant ses points forts,
-      puis enchaîne naturellement sur la proposition des services additionnels listés,
-      en expliquant leur intérêt pour le client de façon concise et persuasive.
+      Rédige la liste des points forts de ce produit sous forme de liste à puces convaincante (5 à 7 points maximum).
+      Chaque point doit être une phrase courte et percutante, mettant en avant un point fort du produit.
+      Dans chaque point, entoure de ** ** les 1 ou 2 mots-clés les plus importants (ex: "**Autonomie** de 20h").
+      Réponds uniquement avec la liste, une puce par ligne commençant par "- ", sans introduction ni conclusion.
     PROMPT
 
     begin
@@ -25,11 +23,5 @@ class SalesArgumentGenerator
       Rails.logger.error("Erreur génération IA: #{e.message}")
       "Une erreur est survenue lors de la génération. Réessaie dans quelques instants."
     end
-  end
-
-  private
-
-  def services_text
-    @services.any? ? @services.join(", ") : "aucun"
   end
 end
