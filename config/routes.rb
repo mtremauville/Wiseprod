@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   resources :products, only: [:index, :show] do
-    post :generate_sav_response, on: :member
+    post :generate_sales_argument, on: :member
   end
   devise_scope :user do
     root to: "devise/sessions#new"
