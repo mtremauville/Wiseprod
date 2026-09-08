@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :products, only: [:index, :show]
+  resources :products, only: [:index, :show] do
+    post :generate_sav_response, on: :member
+  end
   root "products#index"
 end

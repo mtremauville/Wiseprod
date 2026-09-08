@@ -5,3 +5,24 @@
 <p><strong>Argument de vente :</strong> <%= @product.sales_argument %></p>
 
 <%= link_to "← Retour à la liste", products_path %>
+
+<hr>
+<h3>Générer une réponse SAV</h3>
+<%= form_with url: generate_sav_response_product_path(@product), method: :post do |f| %>
+  <div class="mb-3">
+    <%= f.text_area :situation, class: "form-control", placeholder: "Décrivez la situation client...", rows: 3 %>
+  </div>
+  <%= f.submit "Générer", class: "btn btn-success" %>
+<% end %>
+
+<% if @product.generated_contents.any? %>
+  <h4 class="mt-4">Réponses générées</h4>
+  <% @product.generated_contents.where(content_type: "sav_response").each do |gc| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <p><em>Situation : <%= gc.prompt %></em></p>
+        <p><%= gc.response %></p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
