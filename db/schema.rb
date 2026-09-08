@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_192441) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_195049) do
   create_table "generated_contents", force: :cascade do |t|
     t.string "content_type"
     t.datetime "created_at", null: false
     t.integer "product_id", null: false
     t.text "prompt"
     t.text "response"
+    t.string "services"
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_generated_contents_on_product_id"
   end

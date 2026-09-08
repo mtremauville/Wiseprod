@@ -1,29 +1,31 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [ :demo_login ]
 
+  SORT_OPTIONS = {
+    "price_asc" => { price: :asc },
+    "price_desc" => { price: :desc },
+    "name_asc" => { name: :asc }
+  }.freeze
+
   def index
+    @categories = Product.distinct.order(:category).pluck(:category)
+
     @products = Product.all
+    @products = @products.where(category: params[:category]) if params[:category].present?
+    @products = @products.where("name LIKE ?", "%#{Product.sanitize_sql_like(params[:q])}%") if params[:q].present?
+    @products = @products.order(SORT_OPTIONS.fetch(params[:sort], { name: :asc }))
   end
 
   def show
     @product = Product.find(params[:id])
-  end
+    if @product.sales_argument.blank?
+      @product.update(sales_argument: SalesArgumentGenerator.new(@product).call)
+    end
 
-  def generate_sav_response
-    @product = Product.find(params[:id])
-    situation = params[:situation]
-
-    generator = SavResponseGenerator.new(@product, situation)
-    response = generator.call
-
-    GeneratedContent.create(
-      content_type: "sav_response",
-      prompt: situation,
-      response: response,
-      product: @product
-    )
-
-    redirect_to @product, notice: "Réponse générée avec succès"
+    @alternative_products = Product.where(category: @product.category)
+      .where.not(id: @product.id)
+      .order(Arel.sql("ABS(price - #{@product.price})"))
+      .limit(2)
   end
 
   def demo_login

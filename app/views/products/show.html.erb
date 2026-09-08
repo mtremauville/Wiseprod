@@ -1,29 +1,68 @@
-<%= image_tag @product.image_url, class: "img-fluid mb-3", alt: @product.name, style: "max-height: 300px;" %>
-<h1><%= @product.name %></h1>
-<p><strong>Catégorie :</strong> <%= @product.category %></p>
-<p><strong>Prix :</strong> <%= @product.price %> €</p>
-<p><strong>Description :</strong> <%= @product.description %></p>
-<p><strong>Argument de vente :</strong> <%= @product.sales_argument %></p>
+<%= link_to "← Retour à la liste", products_path, class: "back-link" %>
 
-<%= link_to "← Retour à la liste", products_path %>
+<nav class="breadcrumb">
+  <%= link_to "Produits", products_path %>
+  <span>/</span>
+  <%= link_to @product.category, products_path(category: @product.category) %>
+  <span>/</span>
+  <span class="breadcrumb-current"><%= @product.name %></span>
+</nav>
 
-<hr>
-<h3>Générer une réponse SAV</h3>
-<%= form_with url: generate_sav_response_product_path(@product), method: :post do |f| %>
-  <div class="mb-3">
-    <%= f.text_area :situation, class: "form-control", placeholder: "Décrivez la situation client...", rows: 3 %>
-  </div>
-  <%= f.submit "Générer", class: "btn btn-success" %>
-<% end %>
+<div class="product-detail">
+  <div class="product-detail-media">
+    <%= image_tag @product.image_url, alt: @product.name %>
 
-<% if @product.generated_contents.any? %>
-  <h4 class="mt-4">Réponses générées</h4>
-  <% @product.generated_contents.where(content_type: "sav_response").each do |gc| %>
-    <div class="card mb-2">
-      <div class="card-body">
-        <p><em>Situation : <%= gc.prompt %></em></p>
-        <p><%= gc.response %></p>
+    <% if @alternative_products.any? %>
+      <div class="alternatives">
+        <h4>Alternatives possibles</h4>
+        <% @alternative_products.each do |alternative| %>
+          <%= link_to product_path(alternative), class: "alternative-card" do %>
+            <%= image_tag alternative.image_url, alt: alternative.name %>
+            <div>
+              <div class="alternative-name"><%= alternative.name %></div>
+              <div class="alternative-price"><%= alternative.price %> €</div>
+            </div>
+          <% end %>
+        <% end %>
       </div>
+    <% end %>
+
+    <% if (tip = SalesTip.for(@product.category)) %>
+      <div class="sales-tip">
+        <svg class="sales-tip-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26A7 7 0 0 0 12 2z" />
+        </svg>
+        <div>
+          <h4>Conseil vendeur</h4>
+          <p><%= tip %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="product-detail-info">
+    <span class="product-badge"><%= @product.category %></span>
+    <h1><%= @product.name %></h1>
+    <div class="product-detail-price"><%= @product.price %> €</div>
+    <p class="product-detail-description"><%= @product.description %></p>
+
+    <div class="product-detail-panel">
+      <h3>Les points forts du <%= @product.name %></h3>
+      <ul class="argument-list">
+        <% argument_points(@product.sales_argument).each do |point| %>
+          <li><%= format_argument_point(point) %></li>
+        <% end %>
+      </ul>
+
+      <% available_services = FnacService.available_for(@product.category) %>
+      <% if available_services.any? %>
+        <h3 style="margin-top: 24px;">Services Fnac recommandés</h3>
+        <ul class="service-list">
+          <% available_services.each do |service| %>
+            <li><%= service[:name] %></li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>
