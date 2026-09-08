@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!, except: [ :demo_login ]
+
   def index
     @products = Product.all
   end
@@ -22,5 +24,11 @@ class ProductsController < ApplicationController
     )
 
     redirect_to @product, notice: "Réponse générée avec succès"
+  end
+
+  def demo_login
+    demo_user = User.find_by(email: "demo@wiseprod.fr")
+    sign_in(demo_user)
+    redirect_to products_path, notice: "Connecté avec le compte démo"
   end
 end

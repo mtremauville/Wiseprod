@@ -68,3 +68,6 @@ gem "devise"
 # ActiveSupport::JSON.decode still relies on, breaking session/cookie reads.
 gem "json", "~> 2.9"
 gem "ruby_llm"
+group :development do
+  gem "faker"
+end

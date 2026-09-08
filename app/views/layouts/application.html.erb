@@ -24,6 +24,18 @@
   </head>
 
   <body>
+    <nav class="navbar navbar-expand navbar-light bg-light px-3 mb-3">
+      <%= link_to "Wiseprod", root_path, class: "navbar-brand" %>
+      <div class="ms-auto">
+        <% if user_signed_in? %>
+          <span class="me-2"><%= current_user.email %></span>
+          <%= button_to "Se déconnecter", destroy_user_session_path, method: :delete, class: "btn btn-sm btn-outline-secondary" %>
+        <% else %>
+          <%= link_to "Connexion", new_user_session_path, class: "btn btn-sm btn-outline-primary" %>
+        <% end %>
+      </div>
+    </nav>
+
     <p class="notice"><%= notice %></p>
        <p class="alert"><%= alert %></p>
     <%= yield %>

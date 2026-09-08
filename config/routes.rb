@@ -17,5 +17,9 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show] do
     post :generate_sav_response, on: :member
   end
-  root "products#index"
+  devise_scope :user do
+    root to: "devise/sessions#new"
+  end
+
+  get "demo_login", to: "products#demo_login"
 end
