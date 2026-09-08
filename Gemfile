@@ -56,9 +56,15 @@ group :development do
   gem "web-console"
 end
 
+group :development, :test do
+  # Load environment variables from .env
+  gem "dotenv-rails"
+end
+
 gem "bcrypt", "~> 3.1.7"
 gem "devise"
 
 # Pin json below 3.0: it dropped the positional-hash compat shim that
 # ActiveSupport::JSON.decode still relies on, breaking session/cookie reads.
 gem "json", "~> 2.9"
+gem "ruby_llm"
