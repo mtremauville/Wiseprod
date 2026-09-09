@@ -1,4 +1,9 @@
 <footer class="app-footer">
   <span>WiseProd · Outil interne Fnac</span>
-  <span><%= Rails.env.production? ? "v1.0" : "dev" %> · <%= Date.current.strftime("%m/%Y") %></span>
+  <span>
+    <% unless user_signed_in? %>
+      <%= link_to "Se connecter", new_user_session_path, class: "footer-login-link" %> ·
+    <% end %>
+    <%= Rails.env.production? ? "v1.0" : "dev" %> · <%= Date.current.strftime("%m/%Y") %>
+  </span>
 </footer>
