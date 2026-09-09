@@ -24,7 +24,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
- <body data-controller="page-loader"
+ <body class="<%= "has-full-bleed" if devise_controller? %>" data-controller="page-loader"
       data-action="turbo:before-visit@document->page-loader#show turbo:load@document->page-loader#hide">
   <div class="page-loader" data-page-loader-target="overlay">
     <svg class="page-loader-spinner" viewBox="0 0 24 24" aria-hidden="true">
@@ -37,12 +37,30 @@
     <div class="navbar-account">
       <% if user_signed_in? %>
         <span>Conseiller : <%= current_user.email %></span>
-        <%= button_to "Se déconnecter", destroy_user_session_path, method: :delete, class: "navbar-link" %>
-      <% else %>
-        <%= link_to "Connexion", new_user_session_path, class: "navbar-link" %>
+      <div data-controller="modal">
+        <button data-action="modal#open" class="link-logout">Se déconnecter</button>
+
+        <dialog data-modal-target="dialog" data-action="click->modal#closeOnBackdrop" class="confirm-modal">
+          <h3>Se déconnecter ?</h3>
+          <p>Tu devras te reconnecter pour accéder à WiseProd.</p>
+          <div class="confirm-modal-actions">
+            <button data-action="modal#close" class="btn-secondary">Annuler</button>
+            <%= button_to "Se déconnecter", destroy_user_session_path, method: :delete, class: "btn-generate" %>
+          </div>
+        </dialog>
+      </div>
       <% end %>
     </div>
   </nav>
+  <% unless devise_controller? %>
+    <% if flash[:notice].present? %>
+      <div class="page-flash auth-flash-notice" data-controller="toast"><%= flash[:notice] %></div>
+    <% end %>
+    <% if flash[:alert].present? %>
+      <div class="page-flash auth-flash-alert" data-controller="toast"><%= flash[:alert] %></div>
+    <% end %>
+  <% end %>
+
   <main class="page-main">
     <%= yield %>
   </main>

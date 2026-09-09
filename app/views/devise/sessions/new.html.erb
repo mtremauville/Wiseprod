@@ -1,42 +1,91 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <h1 class="auth-title">Connexion</h1>
-    <p class="auth-subtitle">Accédez à votre espace conseiller WiseProd</p>
+<div class="auth-split">
+  <div class="auth-split-brand">
+    <span class="auth-split-brand-name">WiseProd</span>
+    <p>L'outil des conseillers Fnac pour argumenter et vendre mieux.</p>
+  </div>
 
-    <% if flash[:alert].present? %>
-      <div class="auth-flash auth-flash-alert"><%= flash[:alert] %></div>
-    <% end %>
-    <% if flash[:notice].present? %>
-      <div class="auth-flash auth-flash-notice"><%= flash[:notice] %></div>
-    <% end %>
+  <div class="auth-split-form">
+    <div class="flip-card" data-controller="card-flip">
+      <div class="flip-card-inner" data-card-flip-target="inner">
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
-      <div class="auth-field">
-        <%= f.label :email, "Email" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        <div class="flip-card-face flip-card-front">
+          <div class="auth-card" data-controller="auth-flip" data-action="click->auth-flip#intercept">
+            <h1 class="auth-title">Connexion</h1>
+            <p class="auth-subtitle">Accédez à votre espace conseiller WiseProd</p>
+
+            <% if flash[:alert].present? %>
+              <div class="auth-flash auth-flash-alert"><%= flash[:alert] %></div>
+            <% end %>
+            <% if flash[:notice].present? %>
+              <div class="auth-flash auth-flash-notice"><%= flash[:notice] %></div>
+            <% end %>
+
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+              <div class="auth-field">
+                <%= f.label :email, "Email" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+              </div>
+
+              <div class="auth-field">
+                <%= f.label :password, "Mot de passe" %>
+                <%= f.password_field :password, autocomplete: "current-password" %>
+              </div>
+
+              <% if devise_mapping.rememberable? %>
+                <label class="auth-remember">
+                  <%= f.check_box :remember_me %>
+                  Se souvenir de moi
+                </label>
+              <% end %>
+
+              <%= f.submit "Se connecter", class: "auth-submit" %>
+            <% end %>
+
+            <div class="auth-divider"><span>ou</span></div>
+
+            <%= link_to "Essayer sans compte", demo_login_path, class: "auth-demo" %>
+
+            <div class="auth-links">
+              <button type="button" class="auth-flip-trigger" data-action="card-flip#flip">Créer un compte</button>
+              <%= link_to "Forgot your password?", new_user_password_path %>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card-face flip-card-back">
+          <div class="auth-card">
+            <h1 class="auth-title">Créer un compte</h1>
+            <p class="auth-subtitle">Rejoignez l'espace conseiller WiseProd</p>
+
+            <%= form_with url: registration_path(resource_name), method: :post, scope: resource_name, html: { class: "auth-form" } do |f| %>
+              <div class="auth-field">
+                <%= f.label :email, "Email" %>
+                <%= f.email_field :email, autocomplete: "email" %>
+              </div>
+
+              <div class="auth-field">
+                <%= f.label :password, "Mot de passe" %>
+                <%= f.password_field :password, autocomplete: "new-password" %>
+                <% if @minimum_password_length %>
+                  <span class="auth-hint"><%= @minimum_password_length %> caractères minimum</span>
+                <% end %>
+              </div>
+
+              <div class="auth-field">
+                <%= f.label :password_confirmation, "Confirmation du mot de passe" %>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+              </div>
+
+              <%= f.submit "Créer mon compte", class: "auth-submit" %>
+            <% end %>
+
+            <div class="auth-links">
+              <button type="button" class="auth-flip-trigger" data-action="card-flip#flip">J'ai déjà un compte</button>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-      <div class="auth-field">
-        <%= f.label :password, "Mot de passe" %>
-        <%= f.password_field :password, autocomplete: "current-password" %>
-      </div>
-
-      <% if devise_mapping.rememberable? %>
-        <label class="auth-remember">
-          <%= f.check_box :remember_me %>
-          Se souvenir de moi
-        </label>
-      <% end %>
-
-      <%= f.submit "Se connecter", class: "auth-submit" %>
-    <% end %>
-
-    <div class="auth-divider"><span>ou</span></div>
-
-    <%= link_to "Essayer sans compte", demo_login_path, class: "auth-demo" %>
-
-    <div class="auth-links">
-      <%= render "devise/shared/links" %>
     </div>
   </div>
 </div>
