@@ -1,5 +1,8 @@
 <h1>Produits</h1>
-
+<div class="products-header">
+  <h1>Produits</h1>
+  <%= link_to "Étude de besoins", root_path, class: "btn-secondary" %>
+</div>
 <%= form_with url: products_path, method: :get, class: "filter-bar", data: { controller: "search", turbo_frame: "products-results" } do %>
   <%= search_field_tag :q, params[:q], placeholder: "Rechercher un produit ou un prix…", class: "filter-search",
         autocomplete: "off", data: { action: "input->search#submit" } %>
