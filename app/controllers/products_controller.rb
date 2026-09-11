@@ -34,6 +34,6 @@ class ProductsController < ApplicationController
   def demo_login
     demo_user = User.find_by(email: "demo@wiseprod.fr")
     sign_in(demo_user)
-    redirect_to products_path, notice: "Connecté avec le compte démo"
+    redirect_to root_path, notice: "Connecté avec le compte démo"
   end
 end
