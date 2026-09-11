@@ -1,5 +1,5 @@
 <div class="questionnaire-step">
-  <div class="step-progress">Étape 4</div>
+  <%= render "step_progress" %>
   <h1>Quel format lui conviendrait le mieux ?</h1>
 
   <%= form_with url: mobility_consultations_path, method: :post, class: "tile-grid" do |f| %>
@@ -26,5 +26,6 @@
       </svg>
       Toujours sur lui
     </button>
+
   <% end %>
 </div>
