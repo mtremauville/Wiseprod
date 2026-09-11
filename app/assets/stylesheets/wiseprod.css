@@ -1050,3 +1050,37 @@ body {
   border-color: var(--fnac-yellow);
   background: #FFFBEB;
 }
+.tile-option-unsure {
+  grid-column: 1 / -1;
+  background: var(--bg);
+  border-style: dashed;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.tile-option-unsure:hover {
+  border-color: var(--fnac-yellow);
+  color: var(--ink);
+}
+.tile-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.tile-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--ink-soft);
+  transition: color 0.15s;
+}
+
+.tile-option:hover .tile-icon {
+  color: var(--ink);
+}
+
+.tile-option-unsure .tile-icon {
+  width: 24px;
+  height: 24px;
+}
