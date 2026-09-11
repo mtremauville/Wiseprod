@@ -1,5 +1,5 @@
 <div class="questionnaire-step">
-  <div class="step-progress">Étape 1</div>
+<%= render "step_progress" %>
   <h1>Quel type d'appareil le client cherche-t-il ?</h1>
 
   <%= form_with url: device_type_consultations_path, method: :post, class: "tile-grid" do |f| %>

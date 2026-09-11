@@ -4,6 +4,7 @@ class ConsultationsController < ApplicationController
   DEVICE_TYPE_VALUES = %w[ordinateur tablette smartphone].freeze
 
   def device_type
+    @step_number, @total_steps = step_info(action_name)
   end
 
   def save_device_type
@@ -13,6 +14,7 @@ class ConsultationsController < ApplicationController
 
   def usage
     redirect_to root_path unless session[:consultation]
+    @step_number, @total_steps = step_info(action_name)
   end
 
   def save_usage
@@ -22,6 +24,7 @@ class ConsultationsController < ApplicationController
 
   def budget
     redirect_to root_path unless session[:consultation]
+    @step_number, @total_steps = step_info(action_name)
   end
 
   def save_budget
@@ -36,6 +39,7 @@ class ConsultationsController < ApplicationController
 
   def mobility
     redirect_to root_path unless session[:consultation]
+    @step_number, @total_steps = step_info(action_name)
   end
 
   def save_mobility
@@ -45,6 +49,7 @@ class ConsultationsController < ApplicationController
 
   def priority
     redirect_to root_path unless session[:consultation]
+    @step_number, @total_steps = step_info(action_name)
   end
 
   def save_priority
@@ -86,5 +91,22 @@ class ConsultationsController < ApplicationController
     )
 
     redirect_to consultation_path(@consultation), notice: "Argumentaire généré"
+  end
+
+  private
+
+  def step_info(action_name)
+    long_path = session[:consultation] && session[:consultation]["device_type"] == "je_ne_sais_pas"
+    total = long_path ? 5 : 4
+
+    position = case action_name
+              when "device_type" then 1
+              when "usage" then 2
+              when "budget" then 3
+              when "mobility" then 4
+              when "priority" then long_path ? 5 : 4
+              end
+
+    [position, total]
   end
 end
