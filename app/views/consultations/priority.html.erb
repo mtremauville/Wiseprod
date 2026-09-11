@@ -1,0 +1,13 @@
+<div class="questionnaire-step">
+  <div class="step-progress">Étape 4 sur 4</div>
+  <h1>Quelle est sa priorité ?</h1>
+
+  <%= form_with url: priority_consultations_path, method: :post, class: "tile-grid" do |f| %>
+    <% [["performance", "Performance", "fa-bolt"], ["autonomie", "Autonomie", "fa-battery-full"], ["photo_video", "Photo & vidéo", "fa-camera"], ["stockage", "Stockage", "fa-database"]].each do |value, label, icon| %>
+      <button type="submit" name="priority" value="<%= value %>" class="tile-option">
+        <i class="fa-solid <%= icon %>"></i>
+        <%= label %>
+      </button>
+    <% end %>
+  <% end %>
+</div>

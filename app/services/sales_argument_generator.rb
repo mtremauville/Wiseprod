@@ -1,19 +1,37 @@
 class SalesArgumentGenerator
-  def initialize(product)
+  def initialize(product, selected_services, consultation = nil)
     @product = product
+    @selected_services = selected_services
+    @consultation = consultation
   end
 
   def call
+    services_text = @selected_services.any? ? @selected_services.join(", ") : "aucun service additionnel"
+
+    context_text = if @consultation
+      <<~CONTEXT
+        Profil du client :
+        - Usage recherché : #{@consultation.usage_type}
+        - Budget : #{@consultation.budget_range}
+        - Priorité : #{@consultation.priority}
+      CONTEXT
+    else
+      ""
+    end
+
     prompt = <<~PROMPT
       Tu es un conseiller de vente Fnac spécialisé en high-tech.
       Produit : #{@product.name} (#{@product.category})
       Description : #{@product.description}
       Prix : #{@product.price} €
 
-      Rédige la liste des points forts de ce produit sous forme de liste à puces convaincante (5 à 7 points maximum).
-      Chaque point doit être une phrase courte et percutante, mettant en avant un point fort du produit.
-      Dans chaque point, entoure de ** ** les 1 ou 2 mots-clés les plus importants (ex: "**Autonomie** de 20h").
-      Réponds uniquement avec la liste, une puce par ligne commençant par "- ", sans introduction ni conclusion.
+      #{context_text}
+
+      Services additionnels à proposer avec ce produit : #{services_text}
+
+      Rédige un argumentaire de vente convaincant qui répond spécifiquement au besoin exprimé par le client
+      (pas un argumentaire générique), met en avant les points forts du produit en lien avec sa priorité,
+      puis enchaîne sur les services additionnels listés.
     PROMPT
 
     begin

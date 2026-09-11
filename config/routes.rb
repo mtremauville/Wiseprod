@@ -15,9 +15,23 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   resources :products, only: [:index, :show]
-  devise_scope :user do
-    root to: "users/sessions#new"
+  resources :consultations, only: [:new, :create, :show] do
+    collection do
+      get :usage
+      post :usage, action: :save_usage
+      get :budget
+      post :budget, action: :save_budget
+      get :mobility
+      post :mobility, action: :save_mobility
+      get :priority
+      post :priority, action: :save_priority
+    end
+    member do
+      post :generate_argument
+    end
   end
+
+  root "consultations#usage"
 
   get "demo_login", to: "products#demo_login"
 end
