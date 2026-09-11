@@ -1084,3 +1084,29 @@ body {
   width: 24px;
   height: 24px;
 }
+.skip-to-catalog {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.skip-to-catalog .btn-secondary {
+  display: inline-block;
+  text-decoration: none;
+}
+
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.products-header h1 {
+  margin: 0;
+}
+
+.products-header .btn-secondary {
+  text-decoration: none;
+  display: inline-block;
+}
