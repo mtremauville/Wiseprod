@@ -1,25 +1,41 @@
 class ConsultationsController < ApplicationController
   before_action :authenticate_user!
 
+  DEVICE_TYPE_VALUES = %w[ordinateur tablette smartphone].freeze
+
+  def device_type
+  end
+
+  def save_device_type
+    session[:consultation] = { "device_type" => params[:device_type] }
+    redirect_to usage_consultations_path
+  end
+
   def usage
+    redirect_to root_path unless session[:consultation]
   end
 
   def save_usage
-    session[:consultation] = { usage_type: params[:usage_type] }
+    session[:consultation]["usage_type"] = params[:usage_type]
     redirect_to budget_consultations_path
   end
 
   def budget
-    redirect_to usage_consultations_path unless session[:consultation]
+    redirect_to root_path unless session[:consultation]
   end
 
   def save_budget
     session[:consultation]["budget_range"] = params[:budget_range]
-    redirect_to mobility_consultations_path
+
+    if session[:consultation]["device_type"] == "je_ne_sais_pas"
+      redirect_to mobility_consultations_path
+    else
+      redirect_to priority_consultations_path
+    end
   end
 
   def mobility
-    redirect_to usage_consultations_path unless session[:consultation]
+    redirect_to root_path unless session[:consultation]
   end
 
   def save_mobility
@@ -28,16 +44,18 @@ class ConsultationsController < ApplicationController
   end
 
   def priority
-    redirect_to usage_consultations_path unless session[:consultation]
+    redirect_to root_path unless session[:consultation]
   end
 
   def save_priority
-    session[:consultation]["priority"] = params[:priority]
+    device_type = session[:consultation]["device_type"]
+    resolved_category_hint = DEVICE_TYPE_VALUES.include?(device_type) ? device_type : session[:consultation]["mobility"]
 
     @consultation = Consultation.create!(
+      device_type: device_type,
       usage_type: session[:consultation]["usage_type"],
       budget_range: session[:consultation]["budget_range"],
-      mobility: session[:consultation]["mobility"],
+      mobility: resolved_category_hint,
       priority: params[:priority],
       user: current_user
     )

@@ -1,0 +1,13 @@
+<div class="questionnaire-step">
+  <div class="step-progress">Étape 1 sur 5</div>
+  <h1>Quel type d'appareil le client cherche-t-il ?</h1>
+
+  <%= form_with url: device_type_consultations_path, method: :post, class: "tile-grid" do |f| %>
+    <% [["ordinateur", "Ordinateur portable"], ["tablette", "Tablette"], ["smartphone", "Smartphone"]].each do |value, label| %>
+      <button type="submit" name="device_type" value="<%= value %>" class="tile-option"><%= label %></button>
+    <% end %>
+    <button type="submit" name="device_type" value="je_ne_sais_pas" class="tile-option tile-option-unsure">
+      Je ne sais pas — aidez-moi à choisir
+    </button>
+  <% end %>
+</div>

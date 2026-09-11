@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show]
   resources :consultations, only: [:new, :create, :show] do
     collection do
+      get :device_type
+      post :device_type, action: :save_device_type
       get :usage
       post :usage, action: :save_usage
       get :budget
@@ -31,7 +33,7 @@ Rails.application.routes.draw do
     end
   end
 
-  root "consultations#usage"
+  root "consultations#device_type"
 
   get "demo_login", to: "products#demo_login"
 end

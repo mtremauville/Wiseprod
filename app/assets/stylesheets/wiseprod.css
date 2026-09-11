@@ -1050,3 +1050,15 @@ body {
   border-color: var(--fnac-yellow);
   background: #FFFBEB;
 }
+.tile-option-unsure {
+  grid-column: 1 / -1;
+  background: var(--bg);
+  border-style: dashed;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.tile-option-unsure:hover {
+  border-color: var(--fnac-yellow);
+  color: var(--ink);
+}
