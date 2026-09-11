@@ -1,0 +1,13 @@
+<div class="questionnaire-step">
+  <div class="step-progress">Étape 2 sur 4</div>
+  <h1>Quel budget ?</h1>
+
+  <%= form_with url: budget_consultations_path, method: :post, class: "tile-grid" do |f| %>
+    <% [["moins_300", "Moins de 300 €", "fa-coins"], ["300_700", "300 – 700 €", "fa-money-bill"], ["700_1500", "700 – 1500 €", "fa-money-bill-wave"], ["plus_1500", "Plus de 1500 €", "fa-sack-dollar"]].each do |value, label, icon| %>
+      <button type="submit" name="budget_range" value="<%= value %>" class="tile-option">
+        <i class="fa-solid <%= icon %>"></i>
+        <%= label %>
+      </button>
+    <% end %>
+  <% end %>
+</div>

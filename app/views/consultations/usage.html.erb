@@ -1,0 +1,13 @@
+<div class="questionnaire-step">
+  <div class="step-progress">Étape 1 sur 4</div>
+  <h1>Quel usage recherche le client ?</h1>
+
+  <%= form_with url: usage_consultations_path, method: :post, class: "tile-grid" do |f| %>
+    <% [["professionnel", "Professionnel", "fa-briefcase"], ["personnel", "Personnel", "fa-user"], ["etudes", "Études", "fa-graduation-cap"], ["gaming", "Gaming", "fa-gamepad"]].each do |value, label, icon| %>
+      <button type="submit" name="usage_type" value="<%= value %>" class="tile-option">
+        <i class="fa-solid <%= icon %>"></i>
+        <%= label %>
+      </button>
+    <% end %>
+  <% end %>
+</div>

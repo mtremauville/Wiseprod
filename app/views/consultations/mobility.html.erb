@@ -1,0 +1,13 @@
+<div class="questionnaire-step">
+  <div class="step-progress">Étape 3 sur 4</div>
+  <h1>Quelle mobilité recherche le client ?</h1>
+
+  <%= form_with url: mobility_consultations_path, method: :post, class: "tile-grid" do |f| %>
+    <% [["smartphone", "Toujours sur moi", "fa-mobile-screen"], ["tablette", "Transportable", "fa-tablet-screen-button"], ["ordinateur", "Poste de travail", "fa-desktop"]].each do |value, label, icon| %>
+      <button type="submit" name="mobility" value="<%= value %>" class="tile-option">
+        <i class="fa-solid <%= icon %>"></i>
+        <%= label %>
+      </button>
+    <% end %>
+  <% end %>
+</div>
