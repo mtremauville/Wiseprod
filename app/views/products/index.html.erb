@@ -23,18 +23,23 @@
         class: "filter-select", onchange: "this.form.requestSubmit()" %>
 
   <button type="submit" class="filter-submit">Rechercher</button>
-  <% if params[:q].present? || params[:category].present? || params[:sort].present? %>
-    <%= link_to "Réinitialiser", products_path, class: "filter-reset" %>
-  <% end %>
 <% end %>
 
 <%= turbo_frame_tag "products-results", target: "_top" do %>
+  <div class="results-bar">
+    <p class="results-count"><%= pluralize(@products.size, "produit") %></p>
+    <% if params[:q].present? || params[:category].present? || params[:sort].present? %>
+      <%= link_to "Réinitialiser les filtres", products_path, class: "filter-reset" %>
+    <% end %>
+  </div>
+
   <% if @products.any? %>
     <div class="product-grid">
       <% @products.each do |product| %>
         <div class="product-card">
           <%= link_to product_path(product), class: "product-card-media" do %>
-            <%= image_tag product.image_url, alt: product.name %>
+            <span class="product-media-fallback">Image indisponible</span>
+            <%= image_tag product.image_url, alt: product.name, onerror: "this.style.display='none'" %>
           <% end %>
           <span class="product-badge"><%= product.category %></span>
           <div class="product-name"><%= link_to product.name, product_path(product) %></div>
@@ -51,6 +56,9 @@
       <% end %>
     </div>
   <% else %>
-    <p class="empty-state">Aucun produit ne correspond à votre recherche.</p>
+    <div class="empty-state">
+      <p>Aucun produit ne correspond à votre recherche.</p>
+      <%= link_to "Réinitialiser les filtres", products_path, class: "btn-secondary" %>
+    </div>
   <% end %>
 <% end %>
