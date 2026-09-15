@@ -1,33 +1,67 @@
-<%= form_with model: product do |f| %>
-  <div class="field">
-    <%= f.label :name, "Nom" %>
-    <%= f.text_field :name, class: "auth-input" %>
+<div class="product-form-layout" data-controller="product-preview">
+  <div class="form-preview-panel">
+    <p class="panel-label">Aperçu</p>
+    <div class="product-card">
+      <div class="product-card-media">
+        <div class="product-image-placeholder" data-product-preview-target="placeholder" style="<%= product.image_url.present? ? 'display:none;' : '' %>">
+          Aucune image
+        </div>
+        <%= image_tag product.image_url.to_s, alt: "", data: { product_preview_target: "previewImage" },
+              style: product.image_url.present? ? "display:block;" : "display:none;" %>
+      </div>
+      <span class="product-badge" data-product-preview-target="previewCategory"><%= product.category.presence || "Catégorie" %></span>
+      <div class="product-name" data-product-preview-target="previewName"><%= product.name.presence || "Nom du produit" %></div>
+      <div class="product-price" data-product-preview-target="previewPrice"><%= product.price.present? ? "#{product.price} €" : "0,00 €" %></div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :category, "Catégorie" %>
-    <%= f.select :category, ["smartphones", "laptops", "tablets"], {}, class: "auth-input" %>
-  </div>
+  <div class="form-fields-panel">
+    <%= form_with model: product do |f| %>
+      <p class="panel-label">Informations produit</p>
 
-  <div class="field">
-    <%= f.label :price, "Prix (€)" %>
-    <%= f.number_field :price, step: 0.01, class: "auth-input" %>
-  </div>
+      <div class="field">
+        <%= f.label :name do %>Nom <span class="required-mark">*</span><% end %>
+        <%= f.text_field :name, class: "auth-input", required: true, placeholder: "Ex. Smartphone Galaxy S24",
+              data: { product_preview_target: "name", action: "input->product-preview#update" } %>
+      </div>
 
-  <div class="field">
-    <%= f.label :image_url, "URL de l'image" %>
-    <%= f.text_field :image_url, class: "auth-input" %>
-  </div>
+      <div class="field-row">
+        <div class="field">
+          <%= f.label :category do %>Catégorie <span class="required-mark">*</span><% end %>
+          <%= f.select :category, ["smartphones", "laptops", "tablets"], { include_blank: "Choisir…" }, class: "auth-input", required: true,
+                data: { product_preview_target: "category", action: "change->product-preview#update" } %>
+        </div>
 
-  <div class="field">
-    <%= f.label :description, "Description" %>
-    <%= f.text_area :description, rows: 4, class: "auth-input" %>
-  </div>
+        <div class="field">
+          <%= f.label :price do %>Prix (€) <span class="required-mark">*</span><% end %>
+          <%= f.number_field :price, step: 0.01, min: 0, class: "auth-input", required: true, placeholder: "0.00",
+                data: { product_preview_target: "price", action: "input->product-preview#update" } %>
+        </div>
+      </div>
 
-  <div class="field">
-    <%= f.label :sales_argument, "Argument de vente" %>
-    <%= f.text_area :sales_argument, rows: 2, class: "auth-input" %>
-  </div>
+      <div class="field">
+        <%= f.label :image_url, "URL de l'image" %>
+        <%= f.text_field :image_url, class: "auth-input", placeholder: "https://…",
+              data: { product_preview_target: "image", action: "input->product-preview#update" } %>
+      </div>
 
-  <%= f.submit class: "btn-generate" %>
-<% end %>
+      <div class="form-divider"></div>
+      <p class="panel-label">Contenu marketing</p>
+
+      <div class="field">
+        <%= f.label :description, "Description" %>
+        <%= f.text_area :description, rows: 4, class: "auth-input", placeholder: "Décrivez les caractéristiques du produit…" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :sales_argument, "Argument de vente" %>
+        <%= f.text_area :sales_argument, rows: 2, class: "auth-input", placeholder: "Le point fort qui donne envie d'acheter" %>
+      </div>
+
+      <div class="form-actions">
+        <%= link_to "Annuler", product.persisted? ? product_path(product) : products_path, class: "btn-secondary" %>
+        <%= f.submit product.persisted? ? "Enregistrer les modifications" : "Créer le produit", class: "btn-generate" %>
+      </div>
+    <% end %>
+  </div>
+</div>
