@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_180529) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_15_213707) do
   create_table "consultations", force: :cascade do |t|
     t.string "budget_range"
     t.datetime "created_at", null: false
@@ -42,7 +42,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_180529) do
     t.string "name"
     t.decimal "price"
     t.text "sales_argument"
+    t.string "sku"
     t.datetime "updated_at", null: false
+    t.index ["sku"], name: "index_products_on_sku", unique: true
   end
 
   create_table "users", force: :cascade do |t|
