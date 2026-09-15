@@ -1,11 +1,17 @@
-<% content_for :title, "Recherche client · WiseProd" %>
+<% assigning_to_cart = params[:for_cart].present? %>
+<% content_for :title, "#{assigning_to_cart ? "Assigner un client" : "Recherche client"} · WiseProd" %>
+
+<% if assigning_to_cart %>
+  <%= link_to "← Retour au panier", cart_path, class: "back-link" %>
+<% end %>
 
 <div class="products-header">
-  <h1>Clients</h1>
+  <h1><%= assigning_to_cart ? "Assigner un client au panier" : "Clients" %></h1>
   <%= link_to "+ Nouveau client", new_customer_path, class: "btn-generate" %>
 </div>
 
 <%= form_with url: search_customers_path, method: :get, class: "filter-bar", data: { controller: "search", turbo_frame: "customers-results" } do %>
+  <%= hidden_field_tag :for_cart, "true" if assigning_to_cart %>
   <%= search_field_tag :q, params[:q], placeholder: "Nom, téléphone, email ou matricule…", class: "filter-search",
         autocomplete: "off", autofocus: true, data: { action: "input->search#submit" } %>
   <button type="submit" class="filter-submit">Rechercher</button>
@@ -20,14 +26,20 @@
     <p class="results-count"><%= pluralize(@customers.size, "client trouvé", "clients trouvés") %></p>
     <div class="customer-grid">
       <% @customers.each do |customer| %>
-        <%= link_to customer_path(customer), class: "customer-card" do %>
-          <div class="customer-card-header">
-            <span class="customer-card-name"><%= customer.full_name %></span>
-            <span class="matricule-badge"><%= customer.matricule %></span>
-          </div>
-          <p class="customer-card-contact"><%= customer.email %></p>
-          <p class="customer-card-contact"><%= customer.phone %></p>
-        <% end %>
+        <div class="customer-card">
+          <%= link_to customer_path(customer), class: "customer-card-link" do %>
+            <div class="customer-card-header">
+              <span class="customer-card-name"><%= customer.full_name %></span>
+              <span class="matricule-badge"><%= customer.matricule %></span>
+            </div>
+            <p class="customer-card-contact"><%= customer.email %></p>
+            <p class="customer-card-contact"><%= customer.phone %></p>
+          <% end %>
+          <% if assigning_to_cart %>
+            <%= button_to "Assigner à ce panier", assign_customer_cart_path(customer_id: customer.id), method: :post,
+                  class: "btn-generate customer-card-cta" %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   <% else %>

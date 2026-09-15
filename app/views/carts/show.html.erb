@@ -1,0 +1,93 @@
+<% content_for :title, "Panier · WiseProd" %>
+
+<%= link_to "← Retour aux produits", products_path, class: "back-link" %>
+
+<div class="products-header">
+  <h1>Panier</h1>
+  <% if @items.any? %>
+    <p class="results-count"><%= pluralize(@items.size, "article") %></p>
+  <% end %>
+</div>
+
+<div class="cart-customer">
+  <% if @customer %>
+    <div class="cart-customer-assigned">
+      <div class="cart-customer-info">
+        <span class="cart-customer-label">Client assigné</span>
+        <p class="cart-customer-name">
+          <%= link_to @customer.full_name, customer_path(@customer) %>
+          <span class="matricule-badge"><%= @customer.matricule %></span>
+        </p>
+        <p class="cart-customer-contact"><%= @customer.email %> · <%= @customer.phone %></p>
+      </div>
+      <div class="cart-customer-actions">
+        <%= link_to "Changer", search_customers_path(for_cart: true), class: "btn-secondary" %>
+        <%= button_to "Retirer", unassign_customer_cart_path, method: :delete, class: "btn-secondary" %>
+      </div>
+    </div>
+  <% else %>
+    <div class="cart-customer-unassigned">
+      <p>Aucun client assigné à ce panier.</p>
+      <%= link_to "Assigner un client", search_customers_path(for_cart: true), class: "btn-generate" %>
+    </div>
+  <% end %>
+</div>
+
+<% if @items.any? %>
+  <div class="cart-list">
+    <% @items.each_with_index do |item, index| %>
+      <div class="cart-item">
+        <%= link_to product_path(item[:product]), class: "cart-item-media" do %>
+          <%= image_tag item[:product].image_url, alt: item[:product].name, onerror: "this.style.display='none'" %>
+        <% end %>
+
+        <div class="cart-item-info">
+          <div class="cart-item-name"><%= link_to item[:product].name, product_path(item[:product]) %></div>
+          <p class="product-sku">Réf. <%= item[:product].sku %></p>
+
+          <% if item[:services].any? %>
+            <ul class="cart-item-services">
+              <% item[:services].each do |service| %>
+                <li><%= service[:name] %> <span class="sku-tag">Réf. <%= service[:sku] %></span></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+
+        <div class="cart-item-end">
+          <div class="cart-item-price"><%= item[:product].price %> €</div>
+          <%= button_to "Retirer", remove_item_cart_path(index: index), method: :delete, class: "btn-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="cart-summary">
+    <div class="cart-summary-row">
+      <span>Sous-total produits</span>
+      <strong><%= @items.sum { |item| item[:product].price } %> €</strong>
+    </div>
+    <p class="cart-checkout-hint">Les services Fnac sélectionnés sont inclus au ticket, hors tarification affichée ici.</p>
+
+    <div class="cart-summary-actions">
+      <div data-controller="modal">
+        <button type="button" data-action="modal#open" class="btn-secondary">Vider le panier</button>
+
+        <dialog data-modal-target="dialog" data-action="click->modal#closeOnBackdrop" class="confirm-modal">
+          <h3>Vider le panier ?</h3>
+          <p>Les <%= pluralize(@items.size, "article") %> du panier seront retirés. Cette action est irréversible.</p>
+          <div class="confirm-modal-actions">
+            <button data-action="modal#close" class="btn-secondary">Annuler</button>
+            <%= button_to "Vider le panier", clear_cart_path, method: :delete, class: "btn-generate" %>
+          </div>
+        </dialog>
+      </div>
+      <button type="button" class="btn-generate" disabled title="Bientôt disponible">Finaliser le ticket de caisse</button>
+    </div>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p>Le panier est vide.</p>
+    <%= link_to "Voir les produits", products_path, class: "btn-secondary" %>
+  </div>
+<% end %>

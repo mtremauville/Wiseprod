@@ -12,6 +12,14 @@ Rails.application.routes.draw do
     end
   end
 
+resource :cart, only: [:show] do
+  post :add_product
+  delete "remove/:index", action: :remove_item, as: :remove_item
+  delete :clear
+  post :assign_customer
+  delete :unassign_customer
+end
+
   resources :consultations, only: [:new, :create, :show] do
     collection do
       get :device_type
