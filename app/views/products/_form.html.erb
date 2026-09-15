@@ -1,0 +1,33 @@
+<%= form_with model: product do |f| %>
+  <div class="field">
+    <%= f.label :name, "Nom" %>
+    <%= f.text_field :name, class: "auth-input" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :category, "Catégorie" %>
+    <%= f.select :category, ["smartphones", "laptops", "tablets"], {}, class: "auth-input" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :price, "Prix (€)" %>
+    <%= f.number_field :price, step: 0.01, class: "auth-input" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :image_url, "URL de l'image" %>
+    <%= f.text_field :image_url, class: "auth-input" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, rows: 4, class: "auth-input" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :sales_argument, "Argument de vente" %>
+    <%= f.text_area :sales_argument, rows: 2, class: "auth-input" %>
+  </div>
+
+  <%= f.submit class: "btn-generate" %>
+<% end %>
