@@ -41,6 +41,12 @@
         <%= link_to "Étude de besoins", root_path, class: "navbar-nav-link" %>
         <%= link_to "Produits", products_path, class: "navbar-nav-link" %>
         <%= link_to "Clients", search_customers_path, class: "navbar-nav-link" %>
+        <%= link_to cart_path, class: "navbar-nav-link navbar-cart-link" do %>
+          Panier
+          <% if cart_item_count > 0 %>
+            <span class="navbar-cart-badge"><%= cart_item_count %></span>
+          <% end %>
+        <% end %>
       </div>
     <% end %>
     <div class="navbar-account">

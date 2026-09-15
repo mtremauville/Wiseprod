@@ -58,11 +58,23 @@
       <% available_services = FnacService.available_for(@product.category) %>
       <% if available_services.any? %>
         <h3 style="margin-top: 24px;">Services Fnac recommandés</h3>
-        <ul class="service-list">
-          <% available_services.each do |service| %>
-            <li><%= service[:name] %></li>
-          <% end %>
-        </ul>
+
+        <%= form_with url: add_product_cart_path, method: :post do |f| %>
+          <ul class="service-list">
+            <% available_services.each do |service| %>
+              <li>
+                <label class="service-checkbox">
+                  <input type="checkbox" name="services[]" value="<%= service[:key] %>">
+                  <%= service[:name] %> — <span class="sku-tag">Réf. <%= service[:sku] %></span>
+                </label>
+              </li>
+            <% end %>
+          </ul>
+          <%= hidden_field_tag :product_id, @product.id %>
+          <%= f.submit "Ajouter au panier", class: "btn-generate" %>
+        <% end %>
+      <% else %>
+        <%= button_to "Ajouter au panier", add_product_cart_path, params: { product_id: @product.id }, class: "btn-generate", style: "margin-top: 16px;" %>
       <% end %>
     </div>
   </div>
