@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :products
 
-  resources :customers, only: [:new, :create, :show] do
+  resources :customers, only: [:new, :create, :show, :edit, :update, :destroy] do
     collection do
       get :search
     end

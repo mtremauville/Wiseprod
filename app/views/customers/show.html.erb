@@ -18,6 +18,14 @@
     </div>
   </div>
 
+  <div class="customer-detail-actions">
+    <%= link_to "Modifier", edit_customer_path(@customer), class: "btn-secondary" %>
+    <% if current_user&.admin? %>
+      <%= button_to "Supprimer", customer_path(@customer), method: :delete, class: "btn-secondary",
+            form: { data: { turbo_confirm: "Supprimer définitivement ce client ?" } } %>
+    <% end %>
+  </div>
+
   <div class="customer-detail-panel">
     <h3>Coordonnées</h3>
     <dl class="customer-info-list">

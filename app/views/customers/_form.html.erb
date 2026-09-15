@@ -1,0 +1,23 @@
+<%= form_with model: customer do |f| %>
+  <div class="field">
+    <%= f.label :first_name, "Prénom" %>
+    <%= f.text_field :first_name, class: "auth-input" %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name, "Nom" %>
+    <%= f.text_field :last_name, class: "auth-input" %>
+  </div>
+  <div class="field">
+    <%= f.label :email, "Email" %>
+    <%= f.email_field :email, class: "auth-input" %>
+  </div>
+  <div class="field">
+    <%= f.label :phone, "Téléphone" %>
+    <%= f.text_field :phone, class: "auth-input" %>
+  </div>
+  <div class="field">
+    <%= f.label :postal_address, "Adresse postale" %>
+    <%= f.text_area :postal_address, rows: 3, class: "auth-input" %>
+  </div>
+  <%= f.submit customer.new_record? ? "Créer le client" : "Enregistrer les modifications", class: "btn-generate" %>
+<% end %>
