@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :products
-
+resources :receipts, only: [:new, :create, :show]
   resources :customers, only: [:new, :create, :show, :edit, :update, :destroy] do
     collection do
       get :search

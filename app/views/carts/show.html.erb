@@ -67,7 +67,7 @@
       <span>Sous-total produits</span>
       <strong><%= @items.sum { |item| item[:product].price } %> €</strong>
     </div>
-    <p class="cart-checkout-hint">Les services Fnac sélectionnés sont inclus au ticket, hors tarification affichée ici.</p>
+    <p class="cart-checkout-hint">Les services Fnac sélectionnés sont inclus au ticket, sans surcoût affiché.</p>
 
     <div class="cart-summary-actions">
       <div data-controller="modal">
@@ -82,7 +82,7 @@
           </div>
         </dialog>
       </div>
-      <button type="button" class="btn-generate" disabled title="Bientôt disponible">Finaliser le ticket de caisse</button>
+      <%= link_to "Finaliser le ticket de caisse", new_receipt_path, class: "btn-generate" %>
     </div>
   </div>
 <% else %>
