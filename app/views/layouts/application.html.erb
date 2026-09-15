@@ -36,6 +36,13 @@
   </div>
   <nav class="navbar-wiseprod">
     <%= link_to "WiseProd", root_path, class: "navbar-brand" %>
+    <% if user_signed_in? %>
+      <div class="navbar-nav">
+        <%= link_to "Étude de besoins", root_path, class: "navbar-nav-link" %>
+        <%= link_to "Produits", products_path, class: "navbar-nav-link" %>
+        <%= link_to "Clients", search_customers_path, class: "navbar-nav-link" %>
+      </div>
+    <% end %>
     <div class="navbar-account">
       <% if user_signed_in? %>
         <span>Conseiller : <%= current_user.email %></span>

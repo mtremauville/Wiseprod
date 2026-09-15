@@ -6,6 +6,12 @@ Rails.application.routes.draw do
 
   resources :products
 
+  resources :customers, only: [:new, :create, :show] do
+    collection do
+      get :search
+    end
+  end
+
   resources :consultations, only: [:new, :create, :show] do
     collection do
       get :device_type

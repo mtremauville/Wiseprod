@@ -1,0 +1,56 @@
+<% content_for :title, "Nouveau client · WiseProd" %>
+
+<%= link_to "← Retour à la recherche", search_customers_path, class: "back-link" %>
+
+<div class="customer-form-layout">
+  <div class="form-fields-panel">
+    <p class="panel-label">Nouveau client</p>
+    <h1 class="customer-form-title">Créer une fiche client</h1>
+    <p class="customer-form-hint">Un matricule unique sera généré automatiquement à la création.</p>
+
+    <% if @customer.errors.any? %>
+      <div class="auth-flash auth-flash-alert">
+        <strong><%= pluralize(@customer.errors.count, "erreur") %></strong> à corriger :
+        <ul class="form-errors-list">
+          <% @customer.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @customer do |f| %>
+      <div class="field-row">
+        <div class="field">
+          <%= f.label :first_name do %>Prénom <span class="required-mark">*</span><% end %>
+          <%= f.text_field :first_name, class: "auth-input", required: true, placeholder: "Ex. Camille" %>
+        </div>
+        <div class="field">
+          <%= f.label :last_name do %>Nom <span class="required-mark">*</span><% end %>
+          <%= f.text_field :last_name, class: "auth-input", required: true, placeholder: "Ex. Dupont" %>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <%= f.label :email do %>Email <span class="required-mark">*</span><% end %>
+          <%= f.email_field :email, class: "auth-input", required: true, placeholder: "client@exemple.fr" %>
+        </div>
+        <div class="field">
+          <%= f.label :phone do %>Téléphone <span class="required-mark">*</span><% end %>
+          <%= f.telephone_field :phone, class: "auth-input", required: true, placeholder: "06 12 34 56 78" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :postal_address, "Adresse postale" %>
+        <%= f.text_area :postal_address, rows: 3, class: "auth-input", placeholder: "Numéro, rue, code postal, ville…" %>
+      </div>
+
+      <div class="form-actions">
+        <%= link_to "Annuler", search_customers_path, class: "btn-secondary" %>
+        <%= f.submit "Créer le client", class: "btn-generate" %>
+      </div>
+    <% end %>
+  </div>
+</div>
