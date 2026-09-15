@@ -1498,6 +1498,13 @@ textarea.auth-input {
   background: var(--border);
 }
 
+.customer-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
 .customer-detail-panel {
   background: white;
   border: 1px solid var(--border);
