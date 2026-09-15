@@ -1842,3 +1842,63 @@ textarea.auth-input {
     justify-content: flex-end;
   }
 }
+.receipt-fictional-banner {
+  background: #FFF3CD;
+  border: 1px solid #F0C36D;
+  color: #856404;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.receipt {
+  position: relative;
+  overflow: hidden;
+  max-width: 400px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 24px;
+  font-family: "Courier New", monospace;
+}
+
+.receipt::before {
+  content: "FACTICE";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: rgba(176, 38, 38, 0.15);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.receipt-table {
+  width: 100%;
+  font-size: 13px;
+}
+
+.receipt-table td {
+  padding: 4px 0;
+}
+
+.receipt-total {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.receipt-instructions {
+  margin-top: 16px;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media print {
+  .no-print { display: none; }
+  .receipt-fictional-banner { border: 1px solid black; }
+}

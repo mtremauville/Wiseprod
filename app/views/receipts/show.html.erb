@@ -1,0 +1,30 @@
+<div class="receipt-fictional-banner">Document fictif — Projet portfolio, aucune valeur commerciale réelle</div>
+
+<div class="receipt">
+  <h2>Ticket n° <%= @receipt.ticket_number %></h2>
+  <p><%= @receipt.finalized_at.strftime("%d/%m/%Y à %H:%M") %></p>
+
+  <hr>
+
+  <p><strong>Client :</strong> <%= @receipt.customer.full_name %> — Matricule <%= @receipt.customer.matricule %></p>
+
+  <hr>
+
+  <table class="receipt-table">
+    <% @receipt.receipt_items.each do |item| %>
+      <tr>
+        <td><%= item.name %> <span class="sku-tag">Réf. <%= item.sku %></span></td>
+        <td><%= item.unit_price %> €</td>
+      </tr>
+    <% end %>
+  </table>
+
+  <hr>
+
+  <p>Total HT : <%= @receipt.total_ht %> €</p>
+  <p class="receipt-total">Total TTC : <%= @receipt.total_ttc %> €</p>
+
+  <p class="receipt-instructions">Présentez ce ticket à une hôtesse de caisse pour procéder au paiement.</p>
+</div>
+
+<button onclick="window.print()" class="btn-generate no-print">Imprimer</button>
