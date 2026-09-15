@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_215335) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_15_220745) do
   create_table "consultations", force: :cascade do |t|
     t.string "budget_range"
     t.datetime "created_at", null: false
@@ -21,6 +21,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_215335) do
     t.string "usage_type"
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_consultations_on_user_id"
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "matricule"
+    t.string "phone"
+    t.text "postal_address"
+    t.datetime "updated_at", null: false
+    t.index ["matricule"], name: "index_customers_on_matricule", unique: true
   end
 
   create_table "generated_contents", force: :cascade do |t|

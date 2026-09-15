@@ -1,0 +1,39 @@
+<% content_for :title, "Recherche client · WiseProd" %>
+
+<div class="products-header">
+  <h1>Clients</h1>
+  <%= link_to "+ Nouveau client", new_customer_path, class: "btn-generate" %>
+</div>
+
+<%= form_with url: search_customers_path, method: :get, class: "filter-bar", data: { controller: "search", turbo_frame: "customers-results" } do %>
+  <%= search_field_tag :q, params[:q], placeholder: "Nom, téléphone, email ou matricule…", class: "filter-search",
+        autocomplete: "off", autofocus: true, data: { action: "input->search#submit" } %>
+  <button type="submit" class="filter-submit">Rechercher</button>
+<% end %>
+
+<%= turbo_frame_tag "customers-results", target: "_top" do %>
+  <% if params[:q].blank? %>
+    <div class="empty-state">
+      <p>Recherchez un client par nom, téléphone, email ou matricule.</p>
+    </div>
+  <% elsif @customers.any? %>
+    <p class="results-count"><%= pluralize(@customers.size, "client trouvé", "clients trouvés") %></p>
+    <div class="customer-grid">
+      <% @customers.each do |customer| %>
+        <%= link_to customer_path(customer), class: "customer-card" do %>
+          <div class="customer-card-header">
+            <span class="customer-card-name"><%= customer.full_name %></span>
+            <span class="matricule-badge"><%= customer.matricule %></span>
+          </div>
+          <p class="customer-card-contact"><%= customer.email %></p>
+          <p class="customer-card-contact"><%= customer.phone %></p>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <p>Aucun client ne correspond à « <%= params[:q] %> ».</p>
+      <%= link_to "+ Créer ce client", new_customer_path, class: "btn-secondary" %>
+    </div>
+  <% end %>
+<% end %>

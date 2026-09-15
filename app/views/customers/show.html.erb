@@ -1,0 +1,40 @@
+<% content_for :title, "#{@customer.full_name} · WiseProd" %>
+
+<%= link_to "← Retour à la recherche", search_customers_path, class: "back-link" %>
+
+<div class="customer-detail">
+  <div class="customer-detail-header">
+    <div>
+      <h1><%= @customer.full_name %></h1>
+      <p class="customer-detail-subtitle">Client depuis le <%= @customer.created_at.strftime("%d/%m/%Y") %></p>
+    </div>
+
+    <div class="matricule-tag" data-controller="clipboard">
+      <span class="matricule-tag-label">Matricule</span>
+      <span class="matricule-tag-value" data-clipboard-target="source"><%= @customer.matricule %></span>
+      <button type="button" class="matricule-copy" data-action="clipboard#copy" data-clipboard-target="label" title="Copier le matricule">
+        Copier
+      </button>
+    </div>
+  </div>
+
+  <div class="customer-detail-panel">
+    <h3>Coordonnées</h3>
+    <dl class="customer-info-list">
+      <div>
+        <dt>Email</dt>
+        <dd><%= @customer.email %></dd>
+      </div>
+      <div>
+        <dt>Téléphone</dt>
+        <dd><%= @customer.phone %></dd>
+      </div>
+      <% if @customer.postal_address.present? %>
+        <div>
+          <dt>Adresse postale</dt>
+          <dd><%= simple_format @customer.postal_address %></dd>
+        </div>
+      <% end %>
+    </dl>
+  </div>
+</div>
