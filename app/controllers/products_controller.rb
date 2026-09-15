@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!, except: [ :demo_login ]
+  before_action :authenticate_user!, except: [:demo_login]
+  before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   SORT_OPTIONS = {
     "price_asc" => { price: :asc },
@@ -20,9 +21,8 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
     if @product.sales_argument.blank?
-      @product.update(sales_argument: SalesArgumentGenerator.new(@product).call)
+      @product.update(sales_argument: SalesArgumentGenerator.new(@product, []).call)
     end
 
     @alternative_products = Product.where(category: @product.category)
@@ -31,9 +31,53 @@ class ProductsController < ApplicationController
       .limit(2)
   end
 
+  def new
+    @product = Product.new
+    authorize @product
+  end
+
+  def create
+    @product = Product.new(product_params)
+    authorize @product
+    if @product.save
+      redirect_to @product, notice: "Produit créé"
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    authorize @product
+  end
+
+  def update
+    authorize @product
+    if @product.update(product_params)
+      redirect_to @product, notice: "Produit mis à jour"
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize @product
+    @product.destroy
+    redirect_to products_path, notice: "Produit supprimé"
+  end
+
   def demo_login
     demo_user = User.find_by(email: "demo@wiseprod.fr")
     sign_in(demo_user)
     redirect_to root_path, notice: "Connecté avec le compte démo"
+  end
+
+  private
+
+  def set_product
+    @product = Product.find(params[:id])
+  end
+
+  def product_params
+    params.require(:product).permit(:name, :description, :category, :price, :sales_argument, :image_url)
   end
 end

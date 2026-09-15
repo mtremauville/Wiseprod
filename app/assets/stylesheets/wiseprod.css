@@ -173,6 +173,20 @@ body {
   text-decoration: none;
 }
 
+.product-card-admin {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.product-card-admin form {
+  flex: 1;
+}
+
+.product-card-admin .btn-secondary {
+  width: 100%;
+}
+
 @media (max-width: 640px) {
   .page-main {
     padding: 16px;

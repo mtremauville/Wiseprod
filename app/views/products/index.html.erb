@@ -1,6 +1,11 @@
 <div class="products-header">
   <h1>Produits</h1>
-  <%= link_to "Étude de besoins", root_path, class: "btn-secondary" %>
+  <div style="display: flex; gap: 10px;">
+    <% if current_user&.admin? %>
+      <%= link_to "+ Ajouter un produit", new_product_path, class: "btn-generate" %>
+    <% end %>
+    <%= link_to "Étude de besoins", root_path, class: "btn-secondary" %>
+  </div>
 </div>
 <%= form_with url: products_path, method: :get, class: "filter-bar", data: { controller: "search", turbo_frame: "products-results" } do %>
   <%= search_field_tag :q, params[:q], placeholder: "Rechercher un produit ou un prix…", class: "filter-search",
@@ -35,6 +40,13 @@
           <div class="product-name"><%= link_to product.name, product_path(product) %></div>
           <div class="product-price"><%= product.price %> €</div>
           <%= link_to "Voir le détail", product_path(product), class: "btn-generate product-card-cta" %>
+
+          <% if current_user&.admin? %>
+            <div class="product-card-admin">
+              <%= link_to "Modifier", edit_product_path(product), class: "btn-secondary" %>
+              <%= button_to "Supprimer", product_path(product), method: :delete, class: "btn-secondary", form: { data: { turbo_confirm: "Supprimer ce produit ?" } } %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
