@@ -45,7 +45,12 @@ WiseProd guides the salesperson from first contact with the customer all the way
 
 ## Demo
 
-A demo account is available to try the app without creating one
+A demo account is available to try the app without creating one:
+
+```
+Email:    demo@wiseprod.fr
+Password: demopassword123
+```
 
 ## Local setup
 
@@ -76,7 +81,7 @@ The generated document is a simulation for technical demonstration purposes only
 
 ## Author
 
-**Mickael Tremauville** — Junior Frontend Developer in career transition, former tech retail sales advisor (24 years in tech retail).
+**Mickael Tremauville** — Frontend Developer in career transition, former tech retail sales advisor (24 years in tech retail).
 
 - Blog: [tremic.fr](https://tremic.fr)
 - LinkedIn: [linkedin.com/in/mickael-tremauville](https://linkedin.com/in/mickael-tremauville)
